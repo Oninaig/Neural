@@ -121,6 +121,16 @@ namespace Perceptron
         /// The learning rate alpha scales the magnitude of a weight change. Larger values of alpha
         /// generate larger changes in weight which leads to faster learning, but at a risk of overshooting a
         /// good weight value. Smaller values of alpha avoid overshooting but make training slower.
+        /// 
+        /// 
+        /// Updating the bias value does not depend on the value of an associated input, so the logic is:
+        /// if computed &gt; desired then
+        ///  bias = bias - (alpha * delta)
+        /// else
+        ///  bias = bias - (alpha * delta)
+        /// end if
+        /// Therefore, the code logic can be simplified to just:
+        /// bias = bias – (alpha * delta)
         /// </summary>
         /// <param name="computed"></param>
         /// <param name="desired"></param>
