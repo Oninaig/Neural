@@ -144,18 +144,15 @@ namespace NeuralNetwork
             Console.WriteLine("\nHidden outputs:");
             ForwardFeedNeuralNetworkProgram.ShowVector(hOutputs, 4, 4, true);
 
-
-
             for (int j = 0; j < numOutput; ++j)
                 for (int i = 0; i < numHidden; ++i)
-                    oSums[j] += hSums[i] * hoWeights[i][j];
-            Console.WriteLine("\nPre-activation output sums:");
-            ForwardFeedNeuralNetworkProgram.ShowVector(oSums, 2, 4, true);
-
-
+                    oSums[j] += hOutputs[i] * hoWeights[i][j];
 
             for (int i = 0; i < numOutput; ++i)
                 oSums[i] += oBiases[i];
+
+            Console.WriteLine("\nPre-activation output sums:");
+            ForwardFeedNeuralNetworkProgram.ShowVector(oSums, 2, 4, true);
 
             double[] softOut = Softmax(oSums); // Softmax does all outputs at once
 
