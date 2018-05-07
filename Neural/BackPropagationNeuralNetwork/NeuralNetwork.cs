@@ -315,6 +315,27 @@ namespace BackPropagationNeuralNetwork
                 hBiases[i] += momentum * hPrevBiasesDelta[i];
                 hPrevBiasesDelta[i] = delta; // save delta;
             }
+
+            //Hidden to output weights
+            for (int i = 0; i < hoWeights.Length; i++)
+            {
+                for (int j = 0; j < hoWeights[i].Length; ++j)
+                {
+                    double delta = learnRate * oGrads[j] * hOutputs[i];
+                    hoWeights[i][j] += delta;
+                    hoWeights[i][j] += momentum * hoPrevWeightsDelta[i][j];
+                    hoPrevWeightsDelta[i][j] = delta; //Save Delta;
+                }
+            }
+
+            //Output node biases
+            for (int i = 0; i < oBiases.Length; ++i)
+            {
+                double delta = learnRate * oGrads[i] * 1.0;
+                oBiases[i] += delta;
+                oBiases[i] += momentum * oPrevBiasesDelta[i];
+                oPrevBiasesDelta[i] = delta; // Save delta
+            }
         }
 
     }
