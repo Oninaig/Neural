@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7737A3F3-7C1E-489E-9DAA-A50B08ADFE09}</ProjectGuid>
+    <ProjectGuid>{2606FBCC-92CD-48A1-BE22-BD0FE1680920}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BackPropagationNeuralNetwork</RootNamespace>
-    <AssemblyName>BackPropagationNeuralNetwork</AssemblyName>
+    <RootNamespace>NeuralNetworkTraining</RootNamespace>
+    <AssemblyName>NeuralNetworkTraining</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -53,6 +53,12 @@
     <Content Include="IrisData.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BackPropagationNeuralNetwork\BackPropagationNeuralNetwork.csproj">
+      <Project>{7737a3f3-7c1e-489e-9daa-a50b08adfe09}</Project>
+      <Name>BackPropagationNeuralNetwork</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace BackPropagationNeuralNetwork
         private int numInput;
         private int numHidden;
         private int numOutput;
-
+        private static Random rnd;
         private double[] inputs;
 
         private double[][] ihWeights;
@@ -69,7 +70,7 @@ namespace BackPropagationNeuralNetwork
             InitVector(hPrevBiasesDelta, 0.011);
             InitMatrix(hoPrevWeightsDelta, 0.011);
             InitVector(oPrevBiasesDelta, 0.011);
-
+            rnd = new Random(0);
         }
 
         private static double[][] MakeMatrix(int rows, int cols)
@@ -337,6 +338,72 @@ namespace BackPropagationNeuralNetwork
                 oPrevBiasesDelta[i] = delta; // Save delta
             }
         }
+        private static void Shuffle(int[] sequence)
+        {
+            for (int i = 0; i < sequence.Length; ++i)
+            {
+                int r = rnd.Next(i, sequence.Length);
+                int tmp = sequence[r];
+                sequence[r] = sequence[i];
+                sequence[i] = tmp;
+            }
+        }
+
+        public void Train(double[][] trainData, int maxEpochs, double learnRate, double momentum)
+        {
+            int epoch = 0;
+            double[] xValues = new double[numInput];
+            double[] tValues = new double[numOutput]; // Target values
+
+            int[] sequence = new int[trainData.Length];
+            for (int i = 0; i < sequence.Length; ++i)
+            {
+                sequence[i] = i;
+            }
+
+            while (epoch < maxEpochs)
+            {
+                double mse = MeanSquaredError(trainData);
+                Console.WriteLine(epoch + " " + mse.ToString("F4"));
+                if (mse < 0.040) break;
+
+                Shuffle(sequence);
+                for (int i = 0; i < trainData.Length; ++i)
+                {
+                    int idx = sequence[i];
+                    Array.Copy(trainData[idx], xValues, numInput);
+                    Array.Copy(trainData[idx], numInput, tValues, 0, numOutput);
+                    ComputeOutputs(xValues);
+                    UpdateWeights(tValues, learnRate, momentum);
+                }
+                ++epoch;
+            }
+
+        }
+
+        private double MeanSquaredError(double[][] trainData)
+        {
+
+            // Average squared error per training item.
+            double sumSquaredError = 0.0;
+            double[] xValues = new double[numInput]; // First numInput values in trainData.
+            double[] tValues = new double[numOutput]; // Last numOutput values.
+
+            // Walk through each training case. Looks like (6.9 3.2 5.7 2.3) (0 0 1)
+            for (int i = 0; i < trainData.Length; ++i)
+            {
+                Array.Copy(trainData[i], xValues, numInput);
+                Array.Copy(trainData[i], numInput, tValues, 0, numOutput);
+                double[] yValues = this.ComputeOutputs(xValues);
+                for(int j = 0; j < numOutput; ++j)
+                {
+                    double err = tValues[j] - yValues[j];
+                    sumSquaredError += err * err;
+                }
+            }
+            return sumSquaredError / trainData.Length;
+        }
 
     }
+
 }
